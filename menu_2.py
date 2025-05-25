@@ -186,7 +186,45 @@ class Order:
         print(item)
       print(f"Total: ${self.calculate_total():,.2f}")
 
+class Payment():
+  def __init__(self, payment_mode: str, quantity: float):
+      self.payment_mode = payment_mode
+      self.quantity = quantity
+  
+  def paid(self, debt: float) -> str:
+    if(self.payment_mode == "Virtual"):
+      if(self.quantity >= debt):
+         return "Thank you for your paid"
+      elif(self.quantity < debt):
+         return "Invalid Paid, no funds"
+    elif(self.payment_mode == "Cash"):
+      if(self.quantity >= debt):
+         return f"Thank you for your paid, your change is: {(debt - self.quantity)*(-1)}$"
+      elif(self.quantity < debt):
+         return f"Hey, there is not enoguh money, you still owe me {debt - self.quantity}$"
+    else:
+       raise ValueError("This is not a valid method paid")
+      
+
 if __name__ == "__main__":
-    order = Order()           
+    order = Order()
+
+    order.add_item(Beer("Corona", 5000, 6))                # descuento 10% por 6 cervezas
+    order.add_item(Juice("Mango", 16000, 2))               # total 32,000 > 30,000 → 5% descuento
+    order.add_item(Fried_Chicken_Bucket("Family", 25000))  # 10% descuento siempre
+    order.add_item(Water("Bottle of Water", 1000, 10))     # 10% descuento por cantidad >= 10
+    order.add_item(IceCream("Vanilla", 3000, 2))           # sin descuento
+    order.add_item(Pizza("Large", 35000, 1))               # 50% descuento por ser Large
+    order.add_item(Salad("Caesar", 7000, 1))               # sin descuento
+    order.add_item(Coffee("Latte", 6000, 3))               # 3 cafés → 2/3 del precio total
+    order.add_item(Soup("Tomato", 4000, 6))                # más de 5 sopas → 5% descuento
+    order.add_item(Sandwich("Club", 8000, 1))              # siempre 25% descuento
+    order.add_item(Dessert("Chocolate Cake", 5000, 1))     # 50% descuento por ser torta de chocolate
 
     order.show_order()
+
+    # Simulando pago
+    total = order.calculate_total()
+    print("\n--- Payment ---")
+    payment = Payment("Cash", total - 2000)  # paga en efectivo con 2000 de sobra
+    print(payment.paid(total))
