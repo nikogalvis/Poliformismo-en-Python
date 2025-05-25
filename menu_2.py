@@ -176,7 +176,7 @@ class Order:
           if isinstance(item, IceCream):
               icecream = True
 
-      if (beer and chicken and icecream and water and juice): #* You just bought all the food, i will give you a discount
+      if (beer and chicken and icecream and water and juice): #* You just bought all the food, i will give you a discounta
         total *= 0.95
       return total
 
